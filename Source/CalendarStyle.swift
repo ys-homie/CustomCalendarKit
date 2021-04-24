@@ -3,13 +3,17 @@ import UIKit
 
 public enum DateStyle {
     ///Times should be shown in the 12 hour format
-    case twelveHour
+//    case twelveHour
     
     ///Times should be shown in the 24 hour format
     case twentyFourHour
     
     ///Times should be shown according to the user's system preference.
     case system
+    
+    /// 6-22
+    case sixteenHour
+
 }
 
 public struct CalendarStyle {

@@ -114,15 +114,18 @@ public final class TimelineView: UIView {
   lazy var snappingBehavior: EventEditingSnappingBehavior = snappingBehaviorType.init(calendar)
 
   private var times: [String] {
-    return is24hClock ? _24hTimes : _12hTimes
+    return is24hClock ? _24hTimes : _16hTimes
   }
 
-  private lazy var _12hTimes: [String] = TimeStringsFactory(calendar).make12hStrings()
+//  private lazy var _12hTimes: [String] = TimeStringsFactory(calendar).make12hStrings()
+  private lazy var _16hTimes: [String] = TimeStringsFactory(calendar).make16hStrings()
+    
   private lazy var _24hTimes: [String] = TimeStringsFactory(calendar).make24hStrings()
   
   private func regenerateTimeStrings() {
     let factory = TimeStringsFactory(calendar)
-    _12hTimes = factory.make12hStrings()
+//    _12hTimes = factory.make12hStrings()
+    _16hTimes = factory.make16hStrings()
     _24hTimes = factory.make24hStrings()
   }
   
@@ -232,7 +235,7 @@ public final class TimelineView: UIView {
     nowLine.updateStyle(style.timeIndicator)
     
     switch style.dateStyle {
-      case .twelveHour:
+      case .sixteenHour:
         is24hClock = false
       case .twentyFourHour:
         is24hClock = true

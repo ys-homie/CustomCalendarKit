@@ -57,6 +57,12 @@ class CustomCalendarExampleController: DayViewController {
     calendar.timeZone = TimeZone(identifier: "Europe/Paris")!
 
     dayView = DayView(calendar: calendar)
+    
+    var style = CalendarStyle()
+    style.timeline.dateStyle = .sixteenHour
+    style.timeline.timeIndicator.dateStyle = .sixteenHour
+    dayView.updateStyle(style)
+
     view = dayView
   }
   

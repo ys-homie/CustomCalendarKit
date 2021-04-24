@@ -92,7 +92,7 @@ import UIKit
   }
     
   private func updateDate() {
-    dateFormatter.dateFormat = is24hClock ? "HH:mm" : "h:mm a"
+    dateFormatter.dateFormat = "HH:mm"
     dateFormatter.calendar = calendar
     dateFormatter.timeZone = calendar.timeZone
     timeLabel.text = dateFormatter.string(from: date)
@@ -139,7 +139,7 @@ import UIKit
     line.backgroundColor = style.color
     
     switch style.dateStyle {
-    case .twelveHour:
+    case .sixteenHour:
         is24hClock = false
         break
     case .twentyFourHour:
