@@ -76,7 +76,7 @@ public struct TimelineStyle {
   public var verticalInset: CGFloat = 10
   public var leadingInset: CGFloat = 53
   public var eventGap: CGFloat = 0
-  public var addImage: UIImage = UIImage(named: "image-add")!
+  public var addImage: UIImage = UIImage(named: "image-add") ?? UIImage.init()
     
   public init() {}
 }
