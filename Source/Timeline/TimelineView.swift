@@ -534,10 +534,10 @@ public final class TimelineView: UIView {
       // Event starting the previous day
       dayOffset -= 1
     }
-    let fullTimelineHeight = 10 * style.verticalDiff
+    let fullTimelineHeight = 16 * style.verticalDiff
     let hour = component(component: .hour, from: date)
     let minute = component(component: .minute, from: date)
-    let hourY = CGFloat(hour) * style.verticalDiff + style.verticalInset
+    let hourY = CGFloat(hour - 6) * style.verticalDiff + style.verticalInset
     let minuteY = CGFloat(minute) * style.verticalDiff / 60
     return hourY + minuteY + fullTimelineHeight * dayOffset
   }
