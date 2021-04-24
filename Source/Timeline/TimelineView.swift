@@ -60,7 +60,8 @@ public final class TimelineView: UIView {
     let beginningOfDayPosition = dateToY(date)
     return max(firstEventPosition, beginningOfDayPosition)
   }
-
+    
+  // 当前时间line 做隐藏处理
   private lazy var nowLine: CurrentTimeIndicator = CurrentTimeIndicator()
   
   private var allDayViewTopConstraint: NSLayoutConstraint?
@@ -86,8 +87,9 @@ public final class TimelineView: UIView {
   var style = TimelineStyle()
   private var horizontalEventInset: CGFloat = 3
 
+  /// 整体高度
   public var fullHeight: CGFloat {
-    return style.verticalInset * 2 + style.verticalDiff * 24
+    return style.verticalInset * 2 + style.verticalDiff * 16
   }
 
   public var calendarWidth: CGFloat {
@@ -162,7 +164,7 @@ public final class TimelineView: UIView {
     layer.contentsScale = 1
     contentMode = .redraw
     backgroundColor = .white
-    addSubview(nowLine)
+//    addSubview(nowLine)
     
     // Add long press gesture recognizer
     addGestureRecognizer(longPressGestureRecognizer)
@@ -232,7 +234,7 @@ public final class TimelineView: UIView {
   public func updateStyle(_ newStyle: TimelineStyle) {
     style = newStyle
     allDayView.updateStyle(style.allDayStyle)
-    nowLine.updateStyle(style.timeIndicator)
+//    nowLine.updateStyle(style.timeIndicator)
     
     switch style.dateStyle {
       case .sixteenHour:
@@ -254,7 +256,8 @@ public final class TimelineView: UIView {
   override public func draw(_ rect: CGRect) {
     super.draw(rect)
 
-    var hourToRemoveIndex = -1
+    // 当前时间点
+//    var hourToRemoveIndex = -1
 
     var accentedHour = -1
     var accentedMinute = -1
@@ -264,15 +267,15 @@ public final class TimelineView: UIView {
       accentedMinute = snappingBehavior.accentedMinute(for: accentedDate)
     }
 
-    if isToday {
-      let minute = component(component: .minute, from: currentTime)
-      let hour = component(component: .hour, from: currentTime)
-      if minute > 39 {
-        hourToRemoveIndex = hour + 1
-      } else if minute < 21 {
-        hourToRemoveIndex = hour
-      }
-    }
+//    if isToday {
+//      let minute = component(component: .minute, from: currentTime)
+//      let hour = component(component: .hour, from: currentTime)
+//      if minute > 39 {
+//        hourToRemoveIndex = hour + 1
+//      } else if minute < 21 {
+//        hourToRemoveIndex = hour
+//      }
+//    }
 
     let mutableParagraphStyle = NSParagraphStyle.default.mutableCopy() as! NSMutableParagraphStyle
     mutableParagraphStyle.lineBreakMode = .byWordWrapping
@@ -298,6 +301,8 @@ public final class TimelineView: UIView {
     for (hour, time) in times.enumerated() {
         let rightToLeft = UIView.userInterfaceLayoutDirection(for: semanticContentAttribute) == .rightToLeft
         
+        let image = UIImage(named: "image-add")
+        
         let hourFloat = CGFloat(hour)
         let context = UIGraphicsGetCurrentContext()
         context!.interpolationQuality = .none
@@ -322,10 +327,13 @@ public final class TimelineView: UIView {
         context?.beginPath()
         context?.move(to: CGPoint(x: xStart, y: y))
         context?.addLine(to: CGPoint(x: xEnd, y: y))
+        
+        image?.draw(at: CGPoint(x: 25, y: y + 20))
+
         context?.strokePath()
         context?.restoreGState()
     
-        if hour == hourToRemoveIndex { continue }
+//        if hour == hourToRemoveIndex { continue }
     
         let fontSize = style.font.pointSize
         let timeRect: CGRect = {
@@ -374,23 +382,23 @@ public final class TimelineView: UIView {
     super.layoutSubviews()
     recalculateEventLayout()
     layoutEvents()
-    layoutNowLine()
+//    layoutNowLine()
     layoutAllDayEvents()
   }
 
-  private func layoutNowLine() {
-    if !isToday {
-      nowLine.alpha = 0
-    } else {
-		bringSubviewToFront(nowLine)
-      nowLine.alpha = 1
-      let size = CGSize(width: bounds.size.width, height: 20)
-      let rect = CGRect(origin: CGPoint.zero, size: size)
-      nowLine.date = currentTime
-      nowLine.frame = rect
-      nowLine.center.y = dateToY(currentTime)
-    }
-  }
+//  private func layoutNowLine() {
+//    if !isToday {
+//      nowLine.alpha = 0
+//    } else {
+//		bringSubviewToFront(nowLine)
+//      nowLine.alpha = 1
+//      let size = CGSize(width: bounds.size.width, height: 20)
+//      let rect = CGRect(origin: CGPoint.zero, size: size)
+//      nowLine.date = currentTime
+//      nowLine.frame = rect
+//      nowLine.center.y = dateToY(currentTime)
+//    }
+//  }
 
   private func layoutEvents() {
     if eventViews.isEmpty { return }
@@ -528,7 +536,7 @@ public final class TimelineView: UIView {
       // Event starting the previous day
       dayOffset -= 1
     }
-    let fullTimelineHeight = 24 * style.verticalDiff
+    let fullTimelineHeight = 16 * style.verticalDiff
     let hour = component(component: .hour, from: date)
     let minute = component(component: .minute, from: date)
     let hourY = CGFloat(hour) * style.verticalDiff + style.verticalInset
@@ -537,18 +545,23 @@ public final class TimelineView: UIView {
   }
 
   public func yToDate(_ y: CGFloat) -> Date {
-    let timeValue = y - style.verticalInset
+    var timeValue = y
+    if y >= 850 {
+        timeValue = y - style.verticalInset + 6 * style.verticalDiff
+    } else {
+        timeValue = y - style.verticalInset + 8 * style.verticalDiff
+    }
     var hour = Int(timeValue / style.verticalDiff)
     let fullHourPoints = CGFloat(hour) * style.verticalDiff
     let minuteDiff = timeValue - fullHourPoints
     let minute = Int(minuteDiff / style.verticalDiff * 60)
     var dayOffset = 0
-    if hour > 23 {
+    if hour > 21 {
       dayOffset += 1
-      hour -= 24
-    } else if hour < 0 {
+      hour -= 22
+    } else if hour < 6 {
       dayOffset -= 1
-      hour += 24
+      hour += 22
     }
     let offsetDate = calendar.date(byAdding: DateComponents(day: dayOffset),
                                    to: date)!

@@ -16,11 +16,11 @@ public final class SnapTo15MinuteIntervals: EventEditingSnappingBehavior {
     }
 
     var dayOffset = 0
-    if accHour > 23 {
-      accHour -= 24
+    if accHour > 21 {
+      accHour -= 22
       dayOffset += 1
-    } else if accHour < 0 {
-      accHour += 24
+    } else if accHour < 6 {
+      accHour += 22
       dayOffset -= 1
     }
     

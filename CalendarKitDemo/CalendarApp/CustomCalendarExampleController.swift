@@ -88,10 +88,10 @@ class CustomCalendarExampleController: DayViewController {
     var workingDate = Calendar.current.date(byAdding: .hour, value: Int.random(in: 1...15), to: date)!
     var events = [Event]()
     
-    for i in 0...4 {
+    for i in 0...2 {
       let event = Event()
 
-      let duration = Int.random(in: 60 ... 160)
+      let duration = Int.random(in: 30 ... 90)
       event.startDate = workingDate
       event.endDate = Calendar.current.date(byAdding: .minute, value: duration, to: workingDate)!
 
@@ -117,7 +117,7 @@ class CustomCalendarExampleController: DayViewController {
       
       events.append(event)
       
-      let nextOffset = Int.random(in: 40 ... 250)
+      let nextOffset = Int.random(in: 10 ... 40)
       workingDate = Calendar.current.date(byAdding: .minute, value: nextOffset, to: workingDate)!
       event.userInfo = String(i)
     }
