@@ -301,8 +301,6 @@ public final class TimelineView: UIView {
     for (hour, time) in times.enumerated() {
         let rightToLeft = UIView.userInterfaceLayoutDirection(for: semanticContentAttribute) == .rightToLeft
         
-        let image = UIImage(named: "image-add")
-        
         let hourFloat = CGFloat(hour)
         let context = UIGraphicsGetCurrentContext()
         context!.interpolationQuality = .none
@@ -328,7 +326,7 @@ public final class TimelineView: UIView {
         context?.move(to: CGPoint(x: xStart, y: y))
         context?.addLine(to: CGPoint(x: xEnd, y: y))
         
-        image?.draw(at: CGPoint(x: 25, y: y + 20))
+        style.addImage.draw(at: CGPoint(x: 25, y: y + 20))
 
         context?.strokePath()
         context?.restoreGState()
@@ -545,12 +543,12 @@ public final class TimelineView: UIView {
   }
 
   public func yToDate(_ y: CGFloat) -> Date {
-    var timeValue = y
-    if y >= 850 {
-        timeValue = y - style.verticalInset + 6 * style.verticalDiff
-    } else {
-        timeValue = y - style.verticalInset + 8 * style.verticalDiff
-    }
+//    var timeValue = y
+//    if y >= 850 {
+//        timeValue = y - style.verticalInset + 6 * style.verticalDiff
+//    } else {
+    let timeValue = y - style.verticalInset + 6 * style.verticalDiff
+//    }
     var hour = Int(timeValue / style.verticalDiff)
     let fullHourPoints = CGFloat(hour) * style.verticalDiff
     let minuteDiff = timeValue - fullHourPoints
