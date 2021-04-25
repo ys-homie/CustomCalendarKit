@@ -548,13 +548,13 @@ public final class TimelineView: UIView {
     let fullHourPoints = CGFloat(hour) * style.verticalDiff
     let minuteDiff = timeValue - fullHourPoints
     let minute = Int(minuteDiff / style.verticalDiff * 60)
-    var dayOffset = 0
+    let dayOffset = 0
     if hour > 21 {
-      dayOffset += 1
-      hour -= 22
+//      dayOffset += 1
+      hour = 21
     } else if hour < 6 {
-      dayOffset -= 1
-      hour += 22
+//      dayOffset -= 1
+      hour = 6
     }
     let offsetDate = calendar.date(byAdding: DateComponents(day: dayOffset),
                                    to: date)!
