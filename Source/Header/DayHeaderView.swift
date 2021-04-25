@@ -156,10 +156,10 @@ public final class DayHeaderView: UIView, DaySelectorDelegate, DayViewStateUpdat
   // MARK: UIPageViewControllerDataSource
 
   public func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-//    if let selector = viewController as? DaySelectorController {
-//      let previousDate = calendar.date(byAdding: .weekOfYear, value: -1, to: selector.startDate)!
-//      return makeSelectorController(startDate: previousDate)
-//    }
+    if let selector = viewController as? DaySelectorController {
+      let previousDate = calendar.date(byAdding: .weekOfYear, value: -1, to: selector.startDate)!
+      return makeSelectorController(startDate: previousDate)
+    }
     return nil
   }
 
